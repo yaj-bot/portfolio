@@ -1,0 +1,243 @@
+/* ===========================================================
+   Yajur Bawa — shared styles
+   Warm, minimal, editorial. Desktop + mobile.
+   =========================================================== */
+
+:root{
+  --paper:#FAF6EF;
+  --ink:#221F1B;
+  --taupe:#6E665C;
+  --ember:#C24E2C;
+  --surface:#F1E9DC;
+  --line:#E4D9C9;
+  --container:1100px;
+  --measure:680px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Hanken Grotesk",system-ui,sans-serif;
+  font-size:clamp(1.02rem,0.99rem + 0.18vw,1.13rem);
+  line-height:1.72;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+.container{
+  max-width:var(--container);
+  margin:0 auto;
+  padding:0 48px;
+}
+@media(max-width:680px){ .container{padding:0 24px} }
+
+a{color:var(--ember);text-decoration:none}
+a:hover{text-decoration:underline;text-underline-offset:3px}
+a:focus-visible{outline:2px solid var(--ember);outline-offset:3px;border-radius:2px}
+
+/* ---------- top bar ---------- */
+.topbar{
+  position:sticky;top:0;z-index:20;
+  background:color-mix(in srgb, var(--paper) 86%, transparent);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.topbar-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  height:62px;
+}
+.brand{
+  font-family:"Newsreader",Georgia,serif;
+  font-size:1.18rem;font-weight:500;color:var(--ink);letter-spacing:0.01em;
+}
+.brand:hover{text-decoration:none;color:var(--ember)}
+.navlinks{display:flex;gap:30px}
+.navlinks a{
+  color:var(--taupe);font-size:0.9rem;font-weight:500;letter-spacing:0.02em;
+}
+.navlinks a:hover{color:var(--ink);text-decoration:none}
+.navlinks a.active{color:var(--ink)}
+.navlinks a.active::after{
+  content:"";display:block;height:2px;background:var(--ember);
+  margin-top:3px;border-radius:2px;
+}
+@media(max-width:680px){
+  .navlinks{gap:18px}
+  .navlinks a{font-size:0.83rem}
+  .brand{font-size:1.05rem}
+}
+
+/* ---------- hero ---------- */
+.hero{padding:96px 0 56px}
+.eyebrow{
+  font-size:0.78rem;font-weight:600;text-transform:uppercase;
+  letter-spacing:0.16em;color:var(--taupe);margin-bottom:26px;
+}
+.hero h1{
+  font-family:"Newsreader",Georgia,serif;font-weight:400;
+  font-size:clamp(2.7rem,1.9rem + 3.8vw,4.8rem);
+  line-height:1.02;letter-spacing:-0.015em;
+  max-width:14ch;margin-bottom:40px;
+}
+.hero h1 em{font-style:italic;color:var(--ember)}
+.hero-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;
+}
+.hero-lead{
+  font-size:clamp(1.14rem,1.05rem + 0.4vw,1.34rem);max-width:36ch;
+}
+.herolinks{display:flex;gap:20px;flex-wrap:wrap;margin-top:26px;font-weight:600;font-size:0.98rem}
+@media(max-width:820px){
+  .hero{padding:64px 0 44px}
+  .hero-grid{grid-template-columns:1fr;gap:34px}
+}
+
+/* ---------- field note (signature) ---------- */
+.note{
+  font-family:"Newsreader",Georgia,serif;font-style:italic;
+  font-size:1.1rem;line-height:1.6;color:var(--taupe);
+  border-left:2px solid var(--ember);padding-left:22px;max-width:44ch;
+}
+
+/* ---------- page header (sub pages) ---------- */
+.page-head{padding:84px 0 20px}
+.page-head h1{
+  font-family:"Newsreader",Georgia,serif;font-weight:400;
+  font-size:clamp(2.3rem,1.8rem + 2vw,3.4rem);
+  line-height:1.06;letter-spacing:-0.012em;margin-bottom:18px;
+}
+.page-head .intro{color:var(--taupe);max-width:46ch;font-size:1.12rem}
+@media(max-width:820px){ .page-head{padding:54px 0 16px} }
+
+/* ---------- editorial block (label rail + body) ---------- */
+.block{padding:48px 0}
+.block-grid{
+  display:grid;grid-template-columns:200px minmax(0,var(--measure));
+  gap:56px;justify-content:start;
+}
+.block-label{
+  font-size:0.76rem;font-weight:600;text-transform:uppercase;
+  letter-spacing:0.16em;color:var(--ember);padding-top:9px;
+}
+.block-body h2{
+  font-family:"Newsreader",Georgia,serif;font-weight:400;
+  font-size:clamp(1.7rem,1.4rem + 1.1vw,2.3rem);
+  line-height:1.14;letter-spacing:-0.01em;margin-bottom:20px;
+}
+.block-body p + p{margin-top:18px}
+.block-body .soft{color:var(--taupe)}
+@media(max-width:820px){
+  .block{padding:34px 0}
+  .block-grid{grid-template-columns:1fr;gap:14px}
+  .block-label{padding-top:0}
+}
+
+.divider{height:1px;background:var(--line);border:0}
+
+/* ---------- at a glance (home) ---------- */
+.glance{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:48px;
+  padding:18px 0 8px;
+}
+.glance-item h3{
+  font-family:"Newsreader",Georgia,serif;font-weight:500;font-style:italic;
+  font-size:1.3rem;margin-bottom:10px;
+}
+.glance-item p{color:var(--taupe);font-size:0.98rem}
+@media(max-width:820px){
+  .glance{grid-template-columns:1fr;gap:30px}
+}
+
+/* ---------- selected work CTA strip ---------- */
+.cta-strip{
+  display:flex;align-items:baseline;justify-content:space-between;
+  gap:20px;flex-wrap:wrap;padding:8px 0;
+}
+.cta-strip h2{
+  font-family:"Newsreader",Georgia,serif;font-weight:400;
+  font-size:clamp(1.7rem,1.4rem + 1.1vw,2.3rem);letter-spacing:-0.01em;
+}
+.cta-strip a{font-weight:600;font-size:1.02rem}
+
+/* ---------- projects grid ---------- */
+.proj-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:24px;
+  padding:8px 0 12px;
+}
+.proj-card{
+  display:flex;flex-direction:column;gap:12px;
+  padding:28px 26px;border:1px solid var(--line);border-radius:10px;
+  background:var(--paper);color:var(--ink);
+  transition:border-color .25s ease, transform .25s ease, box-shadow .25s ease;
+  height:100%;
+}
+.proj-card:hover{
+  text-decoration:none;border-color:var(--ember);
+  transform:translateY(-3px);
+  box-shadow:0 10px 28px -16px rgba(75,45,30,0.35);
+}
+.proj-tag{
+  font-size:0.72rem;font-weight:600;text-transform:uppercase;
+  letter-spacing:0.14em;color:var(--ember);
+}
+.proj-title{
+  font-family:"Newsreader",Georgia,serif;font-weight:400;
+  font-size:1.5rem;line-height:1.1;letter-spacing:-0.01em;
+}
+.proj-blurb{color:var(--taupe);font-size:0.98rem;flex-grow:1}
+.proj-cta{font-weight:600;color:var(--ember);font-size:0.95rem;margin-top:6px}
+@media(max-width:900px){ .proj-grid{grid-template-columns:repeat(2,1fr)} }
+@media(max-width:600px){ .proj-grid{grid-template-columns:1fr} }
+
+/* ---------- project detail ---------- */
+.back{
+  display:inline-block;font-size:0.9rem;font-weight:600;
+  color:var(--taupe);margin-bottom:30px;
+}
+.back:hover{color:var(--ember);text-decoration:none}
+.detail-head{padding:80px 0 16px}
+.detail-head .eyebrow{margin-bottom:18px}
+.detail-head h1{
+  font-family:"Newsreader",Georgia,serif;font-weight:400;
+  font-size:clamp(2.3rem,1.8rem + 2vw,3.4rem);
+  line-height:1.06;letter-spacing:-0.012em;margin-bottom:16px;
+}
+.detail-head .tagline{color:var(--taupe);max-width:48ch;font-size:1.14rem}
+@media(max-width:820px){ .detail-head{padding:48px 0 12px} }
+
+.placeholder{
+  color:var(--taupe);font-style:italic;
+}
+
+.proj-nav{
+  display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  padding:36px 0 8px;font-weight:600;
+}
+
+/* ---------- footer / contact ---------- */
+.footer{
+  border-top:1px solid var(--line);
+  margin-top:40px;padding:52px 0 60px;
+}
+.footer h2{
+  font-family:"Newsreader",Georgia,serif;font-weight:400;
+  font-size:clamp(1.6rem,1.4rem + 1vw,2.1rem);
+  letter-spacing:-0.01em;margin-bottom:14px;
+}
+.footer p{color:var(--taupe);max-width:44ch;margin-bottom:20px}
+.footer-links{display:flex;gap:24px;flex-wrap:wrap;font-weight:600}
+.footer-base{
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+  margin-top:46px;color:var(--taupe);font-size:0.85rem;
+}
+
+/* ---------- motion ---------- */
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;transition:none}
+  html{scroll-behavior:auto}
+}
