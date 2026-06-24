@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Project A — Yajur Bawa</title>
-<meta name="description" content="Project A, product work by Yajur Bawa.">
+<title>Procurement Automation at Ula — Yajur Bawa</title>
+<meta name="description" content="How Yajur Bawa automated end to end procurement at Ula, a B2B e-commerce platform.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
@@ -28,9 +28,9 @@
   <section class="detail-head">
     <div class="container">
       <a class="back" href="projects.html">&larr; All projects</a>
-      <p class="eyebrow">Tag</p>
-      <h1>Project A</h1>
-      <p class="tagline">One sentence on what this was and why it mattered. Replace with the real positioning line.</p>
+      <p class="eyebrow">Supply chain &middot; 0 to 1</p>
+      <h1>Procurement automation at Ula</h1>
+      <p class="tagline">Ula's buyers ordered by gut and spreadsheet. I replaced that with a system that decides when to order, how much, and from whom, then chases the supplier until they commit.</p>
     </div>
   </section>
 
@@ -39,7 +39,8 @@
       <div class="block-grid reveal">
         <div class="block-label">The problem</div>
         <div class="block-body">
-          <p class="placeholder">Replace this with the real context. Who was the customer, what was broken, and why did it matter enough to put a team on it. Keep it to a few sentences.</p>
+          <p>Ula was a B2B e-commerce platform supplying small retailers across Indonesia. Procurement was done entirely by hand. Buyers eyeballed stock levels and placed orders on instinct, which failed in both directions at once.</p>
+          <p>Order too late and a product went out of stock, so a shop could not restock and Ula lost the sale. Order too much and cash sat frozen in a warehouse as inventory nobody had bought yet. At Ula's scale, both were expensive, and both were happening every single day.</p>
         </div>
       </div>
     </div>
@@ -52,7 +53,7 @@
       <div class="block-grid reveal">
         <div class="block-label">My role</div>
         <div class="block-body">
-          <p class="placeholder">Replace this with what you actually owned. Who you worked with, what was yours to decide, and where you led versus supported.</p>
+          <p>I owned this as the sole product manager, from the first problem framing through to rollout. The real work was not just the design. It was getting four internal teams, demand planning, category, buying ops, and warehousing, plus the engineering team and an entire network of suppliers, to act in concert. None of the automation works if the people and suppliers around it do not play along.</p>
         </div>
       </div>
     </div>
@@ -65,7 +66,69 @@
       <div class="block-grid reveal">
         <div class="block-label">Approach</div>
         <div class="block-body">
-          <p class="placeholder">Replace this with how you went about it. The hypothesis, the test that could have proven you wrong, and the calls you made when the evidence came back.</p>
+          <p>I broke procurement into the four questions a buyer answers every day, and built a system to answer each one.</p>
+          <ul>
+            <li>When to order. The system watches demand against current stock and triggers an order the moment inventory is about to dip below a safe buffer</li>
+            <li>How much to order. It calculates the exact quantity needed to last until the next cycle, accounting for how long the chosen supplier takes to deliver</li>
+            <li>Who to order from. A rating system scores every supplier on price and reliability, then picks the best one for that product</li>
+            <li>Getting a commitment. The supplier receives the order on a simple app, and if they reject it, the system reroutes to the next best supplier on its own, with no one stepping in</li>
+          </ul>
+
+          <div class="diagram">
+            <svg viewBox="0 0 560 690" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Flow of an order from forecast through to a committed supplier">
+              <defs>
+                <marker id="ah" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#B5A892"/></marker>
+                <marker id="ahe" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#C24E2C"/></marker>
+              </defs>
+
+              <!-- arrows -->
+              <line x1="230" y1="80"  x2="230" y2="126" stroke="#B5A892" stroke-width="2" marker-end="url(#ah)"/>
+              <line x1="230" y1="196" x2="230" y2="242" stroke="#B5A892" stroke-width="2" marker-end="url(#ah)"/>
+              <line x1="230" y1="312" x2="230" y2="358" stroke="#B5A892" stroke-width="2" marker-end="url(#ah)"/>
+              <line x1="230" y1="428" x2="230" y2="474" stroke="#B5A892" stroke-width="2" marker-end="url(#ah)"/>
+              <line x1="230" y1="544" x2="230" y2="590" stroke="#B5A892" stroke-width="2" marker-end="url(#ah)"/>
+
+              <!-- reroute loop -->
+              <path d="M380 626 H455 V394 H383" fill="none" stroke="#C24E2C" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ahe)"/>
+              <text x="464" y="488" font-family="'Hanken Grotesk', sans-serif" font-size="11" fill="#C24E2C">rejected?</text>
+              <text x="464" y="504" font-family="'Hanken Grotesk', sans-serif" font-size="11" fill="#C24E2C">reroute to</text>
+              <text x="464" y="520" font-family="'Hanken Grotesk', sans-serif" font-size="11" fill="#C24E2C">next best</text>
+
+              <!-- nodes -->
+              <g>
+                <rect x="80" y="12"  width="300" height="68" rx="12" fill="#F1E9DC" stroke="#E4D9C9" stroke-width="1.5"/>
+                <text x="230" y="39" text-anchor="middle" font-family="'Hanken Grotesk', sans-serif" font-size="14" font-weight="600" fill="#221F1B">Demand forecast</text>
+                <text x="230" y="58" text-anchor="middle" font-family="'Hanken Grotesk', sans-serif" font-size="11.5" fill="#6E665C">meets stock on hand</text>
+              </g>
+              <g>
+                <rect x="80" y="128" width="300" height="68" rx="12" fill="#F1E9DC" stroke="#E4D9C9" stroke-width="1.5"/>
+                <rect x="80" y="132" width="4" height="60" fill="#C24E2C"/>
+                <text x="230" y="155" text-anchor="middle" font-family="'Hanken Grotesk', sans-serif" font-size="14" font-weight="600" fill="#221F1B">When to order</text>
+                <text x="230" y="174" text-anchor="middle" font-family="'Hanken Grotesk', sans-serif" font-size="11.5" fill="#6E665C">stock nears the safety buffer</text>
+              </g>
+              <g>
+                <rect x="80" y="244" width="300" height="68" rx="12" fill="#F1E9DC" stroke="#E4D9C9" stroke-width="1.5"/>
+                <text x="230" y="271" text-anchor="middle" font-family="'Hanken Grotesk', sans-serif" font-size="14" font-weight="600" fill="#221F1B">How much to order</text>
+                <text x="230" y="290" text-anchor="middle" font-family="'Hanken Grotesk', sans-serif" font-size="11.5" fill="#6E665C">quantity to cover the gap</text>
+              </g>
+              <g>
+                <rect x="80" y="360" width="300" height="68" rx="12" fill="#F1E9DC" stroke="#E4D9C9" stroke-width="1.5"/>
+                <text x="230" y="387" text-anchor="middle" font-family="'Hanken Grotesk', sans-serif" font-size="14" font-weight="600" fill="#221F1B">Which supplier</text>
+                <text x="230" y="406" text-anchor="middle" font-family="'Hanken Grotesk', sans-serif" font-size="11.5" fill="#6E665C">scored on price and reliability</text>
+              </g>
+              <g>
+                <rect x="80" y="476" width="300" height="68" rx="12" fill="#F1E9DC" stroke="#E4D9C9" stroke-width="1.5"/>
+                <text x="230" y="503" text-anchor="middle" font-family="'Hanken Grotesk', sans-serif" font-size="14" font-weight="600" fill="#221F1B">Raise the PO</text>
+                <text x="230" y="522" text-anchor="middle" font-family="'Hanken Grotesk', sans-serif" font-size="11.5" fill="#6E665C">and notify the supplier</text>
+              </g>
+              <g>
+                <rect x="80" y="592" width="300" height="68" rx="12" fill="#F1E9DC" stroke="#E4D9C9" stroke-width="1.5"/>
+                <text x="230" y="619" text-anchor="middle" font-family="'Hanken Grotesk', sans-serif" font-size="14" font-weight="600" fill="#221F1B">Supplier commits</text>
+                <text x="230" y="638" text-anchor="middle" font-family="'Hanken Grotesk', sans-serif" font-size="11.5" fill="#6E665C">the order is placed</text>
+              </g>
+            </svg>
+          </div>
+          <p class="diagram-cap">How an order moves through the system, from forecast to a committed supplier.</p>
         </div>
       </div>
     </div>
@@ -78,7 +141,8 @@
       <div class="block-grid reveal">
         <div class="block-label">What shipped</div>
         <div class="block-body">
-          <p class="placeholder">Replace this with what went live and how it changed things, told qualitatively. Metrics can come later once you decide what is safe to share publicly.</p>
+          <p>We rolled it out one warehouse at a time, starting with a single site and a small set of products, then scaling to the full catalog and supplier base there. The system was built to plan around a thousand products in a single half hour run.</p>
+          <p>Product availability rose from 85% to 95%. Fewer stockouts meant retailers could actually buy what they came for, and tighter ordering freed up working capital that had been sitting dead in overstock.</p>
         </div>
       </div>
     </div>
@@ -91,7 +155,8 @@
       <div class="block-grid reveal">
         <div class="block-label">What I learned</div>
         <div class="block-body">
-          <p class="placeholder">Replace this with one honest takeaway. What you would do differently reads better than a victory lap.</p>
+          <p>A fully automated system will confidently make bad decisions at scale, so the guard rails matter as much as the engine. I built dashboards and alerts so the teams could catch the system misbehaving early.</p>
+          <p>I also kept choosing the safe pragmatic option over the elegant one. The supplier app defaulted to accept, so weak adoption could never stall procurement. Limits that were hard to model were hardcoded first and automated later. And every time a planner overrode a recommendation, the system captured why, so we learned exactly where it was wrong. Shipping something real beat waiting for the perfect model.</p>
         </div>
       </div>
     </div>
