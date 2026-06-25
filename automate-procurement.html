@@ -297,26 +297,33 @@
                 <span class="val" id="cycleVal">14</span><span class="unit">days</span>
               </div>
             </div>
+            <div class="calc-inputs" style="margin-top:-8px;">
+              <div class="calc-field">
+                <label>Supplier MOQ</label>
+                <input type="range" id="moq" min="0" max="500" value="100" step="25">
+                <span class="val" id="moqVal">100</span><span class="unit">units min.</span>
+              </div>
+            </div>
 
             <div class="calc-suppliers">
               <div class="calc-suppliers-label">Choose a supplier</div>
               <div class="supplier-cards">
-                <div class="supplier-card selected" data-lead="3" data-price="4.20" data-reliability="97" onclick="selectSupplier(this)">
+                <div class="supplier-card selected" data-lead="3" data-price="4.20" data-reliability="97" data-moq="100" onclick="selectSupplier(this)">
                   <div class="s-check"></div>
                   <div class="s-name">Supplier A</div>
-                  <div class="s-meta">Lead time: 3 days<br>Price: Rp 4,200/unit<br>Reliability: 97%</div>
+                  <div class="s-meta">Lead time: 3 days<br>Price: Rp 4,200/unit<br>Reliability: 97%<br>MOQ: 100 units</div>
                   <div class="s-score">Score: 9.1 / 10</div>
                 </div>
-                <div class="supplier-card" data-lead="5" data-price="3.90" data-reliability="88" onclick="selectSupplier(this)">
+                <div class="supplier-card" data-lead="5" data-price="3.90" data-reliability="88" data-moq="200" onclick="selectSupplier(this)">
                   <div class="s-check"></div>
                   <div class="s-name">Supplier B</div>
-                  <div class="s-meta">Lead time: 5 days<br>Price: Rp 3,900/unit<br>Reliability: 88%</div>
+                  <div class="s-meta">Lead time: 5 days<br>Price: Rp 3,900/unit<br>Reliability: 88%<br>MOQ: 200 units</div>
                   <div class="s-score">Score: 7.4 / 10</div>
                 </div>
-                <div class="supplier-card" data-lead="7" data-price="3.70" data-reliability="79" onclick="selectSupplier(this)">
+                <div class="supplier-card" data-lead="7" data-price="3.70" data-reliability="79" data-moq="300" onclick="selectSupplier(this)">
                   <div class="s-check"></div>
                   <div class="s-name">Supplier C</div>
-                  <div class="s-meta">Lead time: 7 days<br>Price: Rp 3,700/unit<br>Reliability: 79%</div>
+                  <div class="s-meta">Lead time: 7 days<br>Price: Rp 3,700/unit<br>Reliability: 79%<br>MOQ: 300 units</div>
                   <div class="s-score">Score: 5.8 / 10</div>
                 </div>
               </div>
@@ -355,7 +362,8 @@
       <div class="block-grid reveal">
         <div class="block-label">What shipped</div>
         <div class="block-body">
-          <p>We rolled it out one warehouse at a time, starting with a single site and a small set of products, then scaling to the full catalog and supplier base there. The system was built to plan around a thousand products in a single half hour run.</p>
+          <p>We started with the smallest warehouse in the network. A limited SKU set, a controlled supplier list, and a team that could catch the system if it made a bad call. That was deliberate. Not a soft launch, but a tight feedback loop before we trusted the system with scale.</p>
+          <p>It held up. Within weeks we had enough confidence to roll it across the remaining five warehouses, each one faster than the last because the model did not need to be rebuilt, only recalibrated. By the time the full network was live, the system was running procurement plans across a thousand products every half hour with no buyer in the loop.</p>
           <p>Product availability rose from 85% to 95%. Fewer stockouts meant retailers could actually buy what they came for, and tighter ordering freed up working capital that had been sitting dead in overstock.</p>
         </div>
       </div>
@@ -413,7 +421,7 @@
   }
 
   // ── slider live values ───────────────────────────
-  ['demand','stock','cycle'].forEach(id => {
+  ['demand','stock','cycle','moq'].forEach(id => {
     const input = document.getElementById(id);
     const display = document.getElementById(id + 'Val');
     input.addEventListener('input', () => {
@@ -431,6 +439,11 @@
     const supplier = document.querySelector('.supplier-card.selected');
     const lead     = parseInt(supplier.dataset.lead);
     const reliability = parseInt(supplier.dataset.reliability);
+    const supplierMoq = parseInt(supplier.dataset.moq);
+
+    // MOQ: use slider value, but never go below the supplier's own minimum
+    const moq = parseInt(document.getElementById('moq').value);
+    const effectiveMoq = Math.max(moq, supplierMoq);
 
     // Safety stock = 7 days of demand (configurable buffer Ula used)
     const safetyStock = demand * 7;
@@ -440,7 +453,10 @@
 
     // Order quantity = what's needed for the full cycle, minus what's already there above ROP
     const targetStock = demand * (cycle + lead) + safetyStock;
-    const orderQty = Math.max(0, targetStock - stock);
+    const rawQty = Math.max(0, targetStock - stock);
+    // Round up to the nearest MOQ multiple
+    const orderQty = rawQty > 0 ? Math.ceil(rawQty / effectiveMoq) * effectiveMoq : 0;
+    const moqApplied = orderQty > rawQty && rawQty > 0;
 
     // Days of cover remaining
     const daysLeft = Math.floor(stock / demand);
@@ -451,7 +467,9 @@
 
     document.getElementById('outQty').textContent    = orderQty > 0 ? orderQty.toLocaleString() : '0';
     document.getElementById('outQtySub').textContent = orderQty > 0
-      ? `Covers ${cycle} days at current demand`
+      ? moqApplied
+        ? `Rounded up to meet ${effectiveMoq}-unit MOQ`
+        : `Covers ${cycle} days at current demand`
       : 'No order needed yet';
 
     document.getElementById('outDays').textContent   = daysLeft;
@@ -467,10 +485,12 @@
 
     if (stock <= rop) {
       const urgency = stock < demand * lead ? 'Stock is below lead time cover. This product would have already stocked out.' : 'Stock has crossed the reorder point.';
-      verdict.innerHTML = `<strong>Order now.</strong> ${urgency} The system raises a PO for <strong>${orderQty.toLocaleString()} units</strong> with <strong>${sName}</strong> (${reliability}% reliability, ${lead}-day lead time). If they reject it, the next supplier gets it automatically.`;
+      const moqNote = moqApplied ? ` (bumped up to meet the ${effectiveMoq}-unit MOQ)` : '';
+      verdict.innerHTML = `<strong>Order now.</strong> ${urgency} The system raises a PO for <strong>${orderQty.toLocaleString()} units</strong>${moqNote} with <strong>${sName}</strong> (${reliability}% reliability, ${lead}-day lead time). If they reject it, the next supplier gets it automatically.`;
     } else {
       const daysToRop = Math.floor((stock - rop) / demand);
-      verdict.innerHTML = `<strong>No order yet.</strong> Stock will hit the reorder point in <strong>${daysToRop} day${daysToRop !== 1 ? 's' : ''}</strong>. When it does, the system will raise a PO for <strong>${orderQty.toLocaleString()} units</strong> with <strong>${sName}</strong>.`;
+      const moqNoteWait = moqApplied ? ` (rounded up to meet the ${effectiveMoq}-unit MOQ)` : '';
+      verdict.innerHTML = `<strong>No order yet.</strong> Stock will hit the reorder point in <strong>${daysToRop} day${daysToRop !== 1 ? 's' : ''}</strong>. When it does, the system will raise a PO for <strong>${orderQty.toLocaleString()} units</strong>${moqNoteWait} with <strong>${sName}</strong>.`;
     }
   }
 
