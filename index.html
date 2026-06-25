@@ -3,15 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Yajur Bawa — Product Manager</title>
+<title>Yajur Bawa | Product Manager</title>
 <meta name="description" content="Yajur Bawa is a product manager with six years in B2B SaaS. He builds products by listening to customers before building.">
-<meta property="og:title" content="Yajur Bawa — Product Manager">
+<meta property="og:title" content="Yajur Bawa | Product Manager">
 <meta property="og:description" content="Six years in B2B SaaS. I build products by listening before I build.">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<style>
+  .proj-card.coming-soon{opacity:0.72;cursor:default}
+  .proj-card.coming-soon:hover{border-color:var(--line);transform:none;box-shadow:none}
+  .proj-badge{display:inline-block;font-size:0.68rem;font-weight:600;text-transform:uppercase;letter-spacing:0.13em;background:var(--ink);color:var(--paper);border-radius:4px;padding:3px 8px;margin-top:2px;align-self:flex-start}
+  .proj-card.coming-soon .proj-cta{color:var(--taupe)}
+</style>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 </head>
 <body>
 
@@ -72,7 +79,32 @@
     <div class="container">
       <div class="cta-strip reveal">
         <h2>Selected work</h2>
-        <a href="projects.html">Browse the projects &rarr;</a>
+        <a href="projects.html">Browse all projects &rarr;</a>
+      </div>
+      <div class="proj-grid reveal">
+
+        <a class="proj-card" href="automate-procurement.html">
+          <span class="proj-tag">Supply chain &middot; 0 to 1</span>
+          <span class="proj-title">Procurement automation at Ula</span>
+          <span class="proj-blurb">Replaced manual, gut driven buying with a system that decides when to order, how much, and from whom. Availability rose from 85% to 95%.</span>
+          <span class="proj-cta">View project &rarr;</span>
+        </a>
+
+        <a class="proj-card" href="grn-wms.html">
+          <span class="proj-tag">Supply chain &middot; Mobile</span>
+          <span class="proj-title">Real-time warehouse inward at Ula</span>
+          <span class="proj-blurb">Stock sat in the warehouse for 4 hours before customers could buy it. A mobile app for receiver workers closed that gap to near zero.</span>
+          <span class="proj-cta">View project &rarr;</span>
+        </a>
+
+        <a class="proj-card coming-soon" href="psn-india.html">
+          <span class="proj-tag">Side project &middot; Gaming</span>
+          <span class="proj-title">PSN India</span>
+          <span class="proj-badge">Coming 30 June</span>
+          <span class="proj-blurb">A PlayStation deal tracker and backlog manager built for the Indian PSN store. One-person team, start to finish.</span>
+          <span class="proj-cta">Preview &rarr;</span>
+        </a>
+
       </div>
     </div>
   </section>
@@ -84,7 +116,7 @@
     <h2>Let's talk.</h2>
     <p>The fastest way to reach me is email. I read everything and reply to most of it.</p>
     <div class="footer-links">
-      <a href="mailto:bawayajur@gmail.com">bawayajur@gmail.com</a>
+      <a href="mailto:bawayajur@gmail.com">Gmail</a>
       <a href="https://www.linkedin.com/in/yajur-bawa" target="_blank" rel="noopener">LinkedIn</a>
       <a href="https://github.com/yaj-bot/portfolio" target="_blank" rel="noopener">GitHub</a>
     </div>
