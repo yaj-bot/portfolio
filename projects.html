@@ -9,6 +9,29 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<style>
+  .proj-card.coming-soon{
+    opacity:0.72;
+    cursor:default;
+    position:relative;
+  }
+  .proj-card.coming-soon:hover{
+    border-color:var(--line);
+    transform:none;
+    box-shadow:none;
+  }
+  .proj-badge{
+    display:inline-block;
+    font-size:0.68rem;font-weight:600;text-transform:uppercase;
+    letter-spacing:0.13em;
+    background:var(--ink);color:var(--paper);
+    border-radius:4px;padding:3px 8px;
+    margin-top:2px;align-self:flex-start;
+  }
+  .proj-card.coming-soon .proj-cta{
+    color:var(--taupe);
+  }
+</style>
 </head>
 <body>
 
@@ -45,9 +68,9 @@
         </a>
 
         <a class="proj-card" href="project-b.html">
-          <span class="proj-tag">Tag</span>
-          <span class="proj-title">Project B</span>
-          <span class="proj-blurb">One line on what this product was and the dent it made. Replace with the real summary.</span>
+          <span class="proj-tag">Supply chain &middot; Mobile</span>
+          <span class="proj-title">Real-time warehouse inward at Ula</span>
+          <span class="proj-blurb">Stock sat in the warehouse for 4 hours before customers could buy it. A mobile app for receiver workers closed that gap to near zero.</span>
           <span class="proj-cta">View project &rarr;</span>
         </a>
 
@@ -56,6 +79,31 @@
           <span class="proj-title">Project C</span>
           <span class="proj-blurb">One line on what this product was and the dent it made. Replace with the real summary.</span>
           <span class="proj-cta">View project &rarr;</span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="container">
+      <p class="eyebrow">Personal</p>
+      <div class="proj-grid reveal" style="margin-top:12px;">
+
+        <a class="proj-card coming-soon" href="psn-india.html">
+          <span class="proj-tag">Side project &middot; Gaming</span>
+          <span class="proj-title">PSN India</span>
+          <span class="proj-badge">Coming 30 June</span>
+          <span class="proj-blurb">A PlayStation deal tracker and backlog manager built for the Indian PSN store. One-person team, start to finish.</span>
+          <span class="proj-cta">Preview &rarr;</span>
+        </a>
+
+        <a class="proj-card coming-soon" href="butterpaws.html">
+          <span class="proj-tag">Side project &middot; Mobile app</span>
+          <span class="proj-title">Butterpaws</span>
+          <span class="proj-badge">Coming 30 July</span>
+          <span class="proj-blurb">A guided companion app for new pet parents. Tracks vaccinations, surfaces the right advice at the right time, and grows with your pet.</span>
+          <span class="proj-cta">Preview &rarr;</span>
         </a>
 
       </div>

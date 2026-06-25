@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Butterpaws — Yajur Bawa</title>
+<meta name="description" content="A guided companion app for new pet parents. Coming 30 July 2026.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .cs-wrap{
+    min-height:62vh;
+    display:flex;align-items:center;
+    padding:80px 0 60px;
+  }
+  .cs-inner{
+    max-width:520px;
+  }
+  .cs-badge{
+    display:inline-block;
+    font-size:0.72rem;font-weight:600;text-transform:uppercase;
+    letter-spacing:0.14em;
+    background:var(--ink);color:var(--paper);
+    border-radius:4px;padding:4px 10px;
+    margin-bottom:28px;
+  }
+  .cs-inner h1{
+    font-family:"Newsreader",Georgia,serif;font-weight:400;
+    font-size:clamp(2.4rem,2rem + 2vw,3.6rem);
+    line-height:1.05;letter-spacing:-0.015em;
+    margin-bottom:20px;
+  }
+  .cs-inner .tagline{
+    font-size:1.12rem;color:var(--taupe);
+    line-height:1.6;max-width:44ch;
+    margin-bottom:32px;
+  }
+  .cs-eta{
+    font-size:0.88rem;color:var(--taupe);
+    border-left:2px solid var(--ember);
+    padding-left:14px;
+    margin-bottom:36px;
+  }
+  .cs-eta strong{color:var(--ink)}
+  .cs-features{
+    list-style:none;padding:0;margin:0 0 40px;
+    display:flex;flex-direction:column;gap:10px;
+  }
+  .cs-features li{
+    display:flex;align-items:baseline;gap:10px;
+    font-size:0.97rem;color:var(--taupe);
+  }
+  .cs-features li::before{
+    content:"";
+    display:inline-block;
+    width:6px;height:6px;border-radius:50%;
+    background:var(--ember);flex-shrink:0;
+    position:relative;top:-1px;
+  }
+  .cs-back{
+    display:inline-flex;align-items:center;gap:6px;
+    font-weight:600;font-size:0.95rem;color:var(--taupe);
+  }
+  .cs-back:hover{color:var(--ember);text-decoration:none}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a class="brand" href="index.html">Yajur Bawa</a>
+    <nav class="navlinks">
+      <a href="projects.html" class="active">Projects</a>
+      <a href="about.html">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="container cs-wrap">
+    <div class="cs-inner">
+      <span class="cs-badge">Side project &middot; Coming soon</span>
+      <h1>Butterpaws</h1>
+      <p class="tagline">A guided companion app for new pet parents. It mirrors the journey — high-touch in the first few months when anxiety is highest, then fading into a steady support tool as you find your footing.</p>
+
+      <div class="cs-eta">
+        <strong>Going live 30 July 2026.</strong> Built solo on Expo, React Native, and Supabase.
+      </div>
+
+      <ul class="cs-features">
+        <li>Pet profile that makes every reminder and recommendation specific to your animal</li>
+        <li>Vaccination, deworming, and vet visit tracking</li>
+        <li>Onboarding checklist for the first 30 days</li>
+        <li>Weekly guidance that adapts as your pet grows</li>
+        <li>Document storage for health records</li>
+      </ul>
+
+      <a class="cs-back" href="projects.html">&larr; Back to projects</a>
+    </div>
+  </div>
+</main>
+
+<footer class="footer" id="contact">
+  <div class="container">
+    <h2>Let's talk.</h2>
+    <p>The fastest way to reach me is email. I read everything and reply to most of it.</p>
+    <div class="footer-links">
+      <a href="mailto:yajur1995@gmail.com">yajur1995@gmail.com</a>
+      <a href="https://www.linkedin.com/in/yajur-bawa" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+    <div class="footer-base">
+      <span>Yajur Bawa</span>
+      <span>Built in 2026. Still iterating, like everything else.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
