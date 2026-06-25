@@ -10,6 +10,144 @@
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
+<style>
+
+/* ── calculator shell ─────────────────────────────── */
+.calc-wrap{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:36px 40px 40px;
+  margin-top:36px;
+}
+.calc-intro{
+  font-size:0.92rem;color:var(--taupe);
+  margin-bottom:28px;max-width:52ch;
+  line-height:1.6;
+}
+
+/* ── inputs grid ──────────────────────────────────── */
+.calc-inputs{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+  margin-bottom:28px;
+}
+@media(max-width:700px){.calc-inputs{grid-template-columns:1fr}}
+
+.calc-field label{
+  display:block;
+  font-size:0.75rem;font-weight:600;
+  text-transform:uppercase;letter-spacing:0.12em;
+  color:var(--taupe);margin-bottom:8px;
+}
+.calc-field input[type="range"]{
+  width:100%;
+  accent-color:var(--ember);
+  cursor:pointer;
+  margin-bottom:4px;
+}
+.calc-field .val{
+  font-family:"Newsreader",Georgia,serif;
+  font-size:1.6rem;font-weight:400;
+  color:var(--ink);letter-spacing:-0.01em;
+}
+.calc-field .unit{
+  font-size:0.78rem;color:var(--taupe);margin-left:4px;
+}
+
+/* ── supplier row ─────────────────────────────────── */
+.calc-suppliers{
+  margin-bottom:28px;
+}
+.calc-suppliers-label{
+  font-size:0.75rem;font-weight:600;
+  text-transform:uppercase;letter-spacing:0.12em;
+  color:var(--taupe);margin-bottom:12px;
+}
+.supplier-cards{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+}
+@media(max-width:700px){.supplier-cards{grid-template-columns:1fr}}
+
+.supplier-card{
+  border:1.5px solid var(--line);
+  border-radius:10px;
+  padding:14px 16px;
+  background:var(--paper);
+  cursor:pointer;
+  transition:border-color .2s ease, box-shadow .2s ease;
+  position:relative;
+}
+.supplier-card.selected{
+  border-color:var(--ember);
+  box-shadow:0 0 0 3px rgba(194,78,44,0.12);
+}
+.supplier-card .s-name{
+  font-weight:600;font-size:0.95rem;color:var(--ink);
+  margin-bottom:6px;
+}
+.supplier-card .s-meta{
+  font-size:0.8rem;color:var(--taupe);line-height:1.6;
+}
+.supplier-card .s-score{
+  font-size:0.72rem;font-weight:600;text-transform:uppercase;
+  letter-spacing:0.1em;color:var(--ember);margin-top:8px;
+}
+.supplier-card .s-check{
+  position:absolute;top:12px;right:12px;
+  width:18px;height:18px;border-radius:50%;
+  background:var(--ember);
+  display:none;align-items:center;justify-content:center;
+}
+.supplier-card.selected .s-check{display:flex}
+.supplier-card .s-check::after{
+  content:"";width:5px;height:9px;
+  border-right:2px solid #fff;border-bottom:2px solid #fff;
+  transform:rotate(40deg) translate(-1px,-1px);
+}
+
+/* ── output panel ─────────────────────────────────── */
+.calc-output{
+  border-top:1px solid var(--line);
+  padding-top:28px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+@media(max-width:700px){.calc-output{grid-template-columns:1fr}}
+
+.out-block .out-label{
+  font-size:0.72rem;font-weight:600;
+  text-transform:uppercase;letter-spacing:0.13em;
+  color:var(--taupe);margin-bottom:8px;
+}
+.out-block .out-val{
+  font-family:"Newsreader",Georgia,serif;
+  font-size:2rem;font-weight:400;
+  color:var(--ink);letter-spacing:-0.02em;
+  line-height:1;
+}
+.out-block .out-sub{
+  font-size:0.82rem;color:var(--taupe);
+  margin-top:6px;line-height:1.5;
+}
+.out-block.highlight .out-val{color:var(--ember)}
+
+/* ── verdict bar ──────────────────────────────────── */
+.calc-verdict{
+  margin-top:24px;
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-left:3px solid var(--ember);
+  border-radius:0 8px 8px 0;
+  padding:14px 18px;
+  font-size:0.92rem;color:var(--ink);
+  line-height:1.6;
+}
+.calc-verdict strong{color:var(--ember)}
+
+</style>
 </head>
 <body>
 
@@ -81,21 +219,15 @@
                 <marker id="ah" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#B5A892"/></marker>
                 <marker id="ahe" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#C24E2C"/></marker>
               </defs>
-
-              <!-- arrows -->
               <line x1="230" y1="80"  x2="230" y2="126" stroke="#B5A892" stroke-width="2" marker-end="url(#ah)"/>
               <line x1="230" y1="196" x2="230" y2="242" stroke="#B5A892" stroke-width="2" marker-end="url(#ah)"/>
               <line x1="230" y1="312" x2="230" y2="358" stroke="#B5A892" stroke-width="2" marker-end="url(#ah)"/>
               <line x1="230" y1="428" x2="230" y2="474" stroke="#B5A892" stroke-width="2" marker-end="url(#ah)"/>
               <line x1="230" y1="544" x2="230" y2="590" stroke="#B5A892" stroke-width="2" marker-end="url(#ah)"/>
-
-              <!-- reroute loop -->
               <path d="M380 626 H455 V394 H383" fill="none" stroke="#C24E2C" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ahe)"/>
               <text x="464" y="488" font-family="'Hanken Grotesk', sans-serif" font-size="11" fill="#C24E2C">rejected?</text>
               <text x="464" y="504" font-family="'Hanken Grotesk', sans-serif" font-size="11" fill="#C24E2C">reroute to</text>
               <text x="464" y="520" font-family="'Hanken Grotesk', sans-serif" font-size="11" fill="#C24E2C">next best</text>
-
-              <!-- nodes -->
               <g>
                 <rect x="80" y="12"  width="300" height="68" rx="12" fill="#F1E9DC" stroke="#E4D9C9" stroke-width="1.5"/>
                 <text x="230" y="39" text-anchor="middle" font-family="'Hanken Grotesk', sans-serif" font-size="14" font-weight="600" fill="#221F1B">Demand forecast</text>
@@ -137,6 +269,87 @@
 
   <div class="container"><hr class="divider"></div>
 
+  <!-- ── DECISION CALCULATOR ───────────────────────────── -->
+  <section class="block">
+    <div class="container">
+      <div class="block-grid reveal">
+        <div class="block-label">Try the logic</div>
+        <div class="block-body">
+          <p>This is the actual decision the system made, hundreds of times a day. Put in a product's numbers and see what it would have done.</p>
+
+          <div class="calc-wrap">
+            <p class="calc-intro">Adjust the sliders for any product. The system will tell you when to reorder, how many units to buy, and which supplier to use.</p>
+
+            <div class="calc-inputs">
+              <div class="calc-field">
+                <label>Daily demand</label>
+                <input type="range" id="demand" min="10" max="500" value="80" step="5">
+                <span class="val" id="demandVal">80</span><span class="unit">units/day</span>
+              </div>
+              <div class="calc-field">
+                <label>Stock on hand</label>
+                <input type="range" id="stock" min="0" max="3000" value="600" step="50">
+                <span class="val" id="stockVal">600</span><span class="unit">units</span>
+              </div>
+              <div class="calc-field">
+                <label>Replenishment cycle</label>
+                <input type="range" id="cycle" min="7" max="30" value="14" step="1">
+                <span class="val" id="cycleVal">14</span><span class="unit">days</span>
+              </div>
+            </div>
+
+            <div class="calc-suppliers">
+              <div class="calc-suppliers-label">Choose a supplier</div>
+              <div class="supplier-cards">
+                <div class="supplier-card selected" data-lead="3" data-price="4.20" data-reliability="97" onclick="selectSupplier(this)">
+                  <div class="s-check"></div>
+                  <div class="s-name">Supplier A</div>
+                  <div class="s-meta">Lead time: 3 days<br>Price: Rp 4,200/unit<br>Reliability: 97%</div>
+                  <div class="s-score">Score: 9.1 / 10</div>
+                </div>
+                <div class="supplier-card" data-lead="5" data-price="3.90" data-reliability="88" onclick="selectSupplier(this)">
+                  <div class="s-check"></div>
+                  <div class="s-name">Supplier B</div>
+                  <div class="s-meta">Lead time: 5 days<br>Price: Rp 3,900/unit<br>Reliability: 88%</div>
+                  <div class="s-score">Score: 7.4 / 10</div>
+                </div>
+                <div class="supplier-card" data-lead="7" data-price="3.70" data-reliability="79" onclick="selectSupplier(this)">
+                  <div class="s-check"></div>
+                  <div class="s-name">Supplier C</div>
+                  <div class="s-meta">Lead time: 7 days<br>Price: Rp 3,700/unit<br>Reliability: 79%</div>
+                  <div class="s-score">Score: 5.8 / 10</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="calc-output">
+              <div class="out-block">
+                <div class="out-label">Reorder point</div>
+                <div class="out-val" id="outROP">–</div>
+                <div class="out-sub" id="outROPsub">Trigger an order when stock falls to this level</div>
+              </div>
+              <div class="out-block highlight">
+                <div class="out-label">Order quantity</div>
+                <div class="out-val" id="outQty">–</div>
+                <div class="out-sub" id="outQtySub">Units to order right now</div>
+              </div>
+              <div class="out-block">
+                <div class="out-label">Days of cover left</div>
+                <div class="out-val" id="outDays">–</div>
+                <div class="out-sub" id="outDaysSub">At current demand rate</div>
+              </div>
+            </div>
+
+            <div class="calc-verdict" id="calcVerdict"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ── END CALCULATOR ────────────────────────────────── -->
+
+  <div class="container"><hr class="divider"></div>
+
   <section class="block">
     <div class="container">
       <div class="block-grid reveal">
@@ -167,7 +380,7 @@
     <div class="container">
       <div class="proj-nav">
         <a href="projects.html">&larr; All projects</a>
-        <a href="grn-wms.html">Next: Project B &rarr;</a>
+        <a href="grn-wms.html">Next: GRN on Mobile &rarr;</a>
       </div>
     </div>
   </section>
@@ -191,5 +404,78 @@
 </footer>
 
 <script src="app.js"></script>
+<script>
+  // ── supplier selection ───────────────────────────
+  function selectSupplier(el) {
+    document.querySelectorAll('.supplier-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    calculate();
+  }
+
+  // ── slider live values ───────────────────────────
+  ['demand','stock','cycle'].forEach(id => {
+    const input = document.getElementById(id);
+    const display = document.getElementById(id + 'Val');
+    input.addEventListener('input', () => {
+      display.textContent = input.value;
+      calculate();
+    });
+  });
+
+  // ── core logic ───────────────────────────────────
+  function calculate() {
+    const demand   = parseInt(document.getElementById('demand').value);
+    const stock    = parseInt(document.getElementById('stock').value);
+    const cycle    = parseInt(document.getElementById('cycle').value);
+
+    const supplier = document.querySelector('.supplier-card.selected');
+    const lead     = parseInt(supplier.dataset.lead);
+    const reliability = parseInt(supplier.dataset.reliability);
+
+    // Safety stock = 7 days of demand (configurable buffer Ula used)
+    const safetyStock = demand * 7;
+
+    // Reorder point = demand during lead time + safety stock
+    const rop = (demand * lead) + safetyStock;
+
+    // Order quantity = what's needed for the full cycle, minus what's already there above ROP
+    const targetStock = demand * (cycle + lead) + safetyStock;
+    const orderQty = Math.max(0, targetStock - stock);
+
+    // Days of cover remaining
+    const daysLeft = Math.floor(stock / demand);
+
+    // Update outputs
+    document.getElementById('outROP').textContent    = rop.toLocaleString();
+    document.getElementById('outROPsub').textContent = `Lead time ${lead}d + 7-day safety buffer`;
+
+    document.getElementById('outQty').textContent    = orderQty > 0 ? orderQty.toLocaleString() : '0';
+    document.getElementById('outQtySub').textContent = orderQty > 0
+      ? `Covers ${cycle} days at current demand`
+      : 'No order needed yet';
+
+    document.getElementById('outDays').textContent   = daysLeft;
+    document.getElementById('outDaysSub').textContent = daysLeft <= lead
+      ? `⚠ Below lead time. Order overdue.`
+      : daysLeft <= (lead + 7)
+        ? `Approaching reorder point`
+        : `Comfortable`;
+
+    // Verdict
+    const verdict = document.getElementById('calcVerdict');
+    const sName = supplier.querySelector('.s-name').textContent;
+
+    if (stock <= rop) {
+      const urgency = stock < demand * lead ? 'Stock is below lead time cover. This product would have already stocked out.' : 'Stock has crossed the reorder point.';
+      verdict.innerHTML = `<strong>Order now.</strong> ${urgency} The system raises a PO for <strong>${orderQty.toLocaleString()} units</strong> with <strong>${sName}</strong> (${reliability}% reliability, ${lead}-day lead time). If they reject it, the next supplier gets it automatically.`;
+    } else {
+      const daysToRop = Math.floor((stock - rop) / demand);
+      verdict.innerHTML = `<strong>No order yet.</strong> Stock will hit the reorder point in <strong>${daysToRop} day${daysToRop !== 1 ? 's' : ''}</strong>. When it does, the system will raise a PO for <strong>${orderQty.toLocaleString()} units</strong> with <strong>${sName}</strong>.`;
+    }
+  }
+
+  // Run on load
+  calculate();
+</script>
 </body>
 </html>
