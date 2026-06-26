@@ -4,12 +4,288 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GRN on Mobile at Ula | Yajur Bawa</title>
-<meta name="description" content="Project B, product work by Yajur Bawa.">
+<meta name="description" content="How Yajur Bawa replaced a daily batch upload process with a real-time mobile GRN app at Ula.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+<style>
+/* ── warehouse game shell ─────────────────────── */
+.game-wrap{
+  border:1px solid var(--line);
+  border-radius:14px;
+  overflow:hidden;
+  margin-top:32px;
+  background:var(--surface);
+}
+
+.game-mode-bar{
+  display:flex;
+  border-bottom:1px solid var(--line);
+}
+.game-mode-btn{
+  flex:1;
+  padding:14px 20px;
+  font-size:0.82rem;font-weight:600;
+  text-transform:uppercase;letter-spacing:0.12em;
+  background:none;border:none;cursor:pointer;
+  color:var(--taupe);
+  transition:background .18s, color .18s;
+  border-bottom:2px solid transparent;
+  margin-bottom:-1px;
+}
+.game-mode-btn.active{
+  color:var(--ember);
+  border-bottom-color:var(--ember);
+  background:var(--paper);
+}
+
+.game-stage{
+  padding:28px 32px 32px;
+}
+
+/* ── warehouse scene ──────────────────────────── */
+.warehouse-scene{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:24px;
+  margin-bottom:24px;
+  min-height:180px;
+  position:relative;
+}
+
+.scene-label{
+  font-size:0.7rem;font-weight:600;text-transform:uppercase;
+  letter-spacing:0.14em;color:var(--taupe);
+  margin-bottom:16px;
+}
+
+.truck-area{
+  display:flex;align-items:center;gap:20px;
+  margin-bottom:20px;
+}
+
+.truck-icon{
+  font-size:2.4rem;flex-shrink:0;
+}
+
+.items-grid{
+  display:flex;gap:10px;flex-wrap:wrap;
+}
+
+.item-box{
+  width:64px;height:64px;
+  border:2px solid var(--line);
+  border-radius:8px;
+  background:var(--surface);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  font-size:1.4rem;
+  cursor:pointer;
+  transition:border-color .15s, background .15s, transform .1s;
+  position:relative;
+  user-select:none;
+}
+.item-box:hover{
+  border-color:var(--ember);
+  background:var(--paper);
+  transform:translateY(-2px);
+}
+.item-box.scanned{
+  border-color:#4CAF50;
+  background:#f0faf0;
+  cursor:default;
+}
+.item-box.scanned::after{
+  content:"✓";
+  position:absolute;
+  top:2px;right:5px;
+  font-size:0.7rem;color:#4CAF50;font-weight:700;
+}
+.item-box .item-name{
+  font-size:0.6rem;color:var(--taupe);font-weight:600;
+  text-transform:uppercase;letter-spacing:0.05em;
+  margin-top:2px;
+}
+
+/* ── status strip ─────────────────────────────── */
+.status-strip{
+  display:flex;gap:16px;align-items:stretch;
+  margin-bottom:20px;
+  flex-wrap:wrap;
+}
+
+.status-card{
+  flex:1;min-width:120px;
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:12px 16px;
+}
+.status-card .s-label{
+  font-size:0.68rem;font-weight:600;text-transform:uppercase;
+  letter-spacing:0.12em;color:var(--taupe);margin-bottom:6px;
+}
+.status-card .s-val{
+  font-family:"Newsreader",Georgia,serif;
+  font-size:1.5rem;color:var(--ink);letter-spacing:-0.01em;
+}
+.status-card.alert .s-val{color:var(--ember)}
+.status-card.good .s-val{color:#4CAF50}
+
+/* ── invisible clock ──────────────────────────── */
+.invisible-clock{
+  background:var(--ink);
+  border-radius:8px;
+  padding:14px 18px;
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:20px;
+  gap:12px;
+}
+.clock-label{
+  font-size:0.75rem;font-weight:600;text-transform:uppercase;
+  letter-spacing:0.12em;color:rgba(255,255,255,0.5);
+}
+.clock-val{
+  font-family:"Newsreader",Georgia,serif;
+  font-size:1.8rem;color:#ff6b4a;letter-spacing:-0.01em;
+  font-variant-numeric:tabular-nums;
+}
+.clock-val.stopped{color:#4CAF50}
+.clock-note{
+  font-size:0.78rem;color:rgba(255,255,255,0.45);
+  max-width:22ch;text-align:right;line-height:1.4;
+}
+
+/* ── grn panel ────────────────────────────────── */
+.grn-panel{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:20px;
+  margin-bottom:20px;
+}
+.grn-panel-title{
+  font-size:0.75rem;font-weight:600;text-transform:uppercase;
+  letter-spacing:0.12em;color:var(--taupe);margin-bottom:14px;
+}
+.grn-rows{}
+.grn-row{
+  display:flex;align-items:center;gap:12px;
+  padding:8px 0;
+  border-bottom:1px solid var(--line);
+  font-size:0.9rem;
+}
+.grn-row:last-child{border-bottom:none}
+.grn-row .gr-icon{font-size:1.2rem;width:28px;text-align:center}
+.grn-row .gr-name{flex:1;color:var(--ink);font-weight:500}
+.grn-row .gr-qty{
+  font-family:"Newsreader",Georgia,serif;
+  font-size:1.1rem;color:var(--taupe);
+  min-width:60px;text-align:right;
+}
+.grn-row.pending .gr-qty{color:var(--line)}
+.grn-row.scanned .gr-qty{color:var(--ink)}
+
+/* ── action area ──────────────────────────────── */
+.action-area{
+  display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+}
+
+.btn-submit{
+  background:var(--ember);color:var(--paper);
+  border:none;border-radius:8px;
+  padding:12px 28px;
+  font-family:"Hanken Grotesk",sans-serif;
+  font-size:0.9rem;font-weight:600;
+  cursor:pointer;
+  transition:opacity .15s, transform .1s;
+}
+.btn-submit:disabled{opacity:0.35;cursor:not-allowed;transform:none}
+.btn-submit:not(:disabled):hover{opacity:0.88;transform:translateY(-1px)}
+
+.btn-reset{
+  background:none;border:1px solid var(--line);
+  border-radius:8px;padding:12px 20px;
+  font-family:"Hanken Grotesk",sans-serif;
+  font-size:0.88rem;color:var(--taupe);
+  cursor:pointer;
+  transition:border-color .15s, color .15s;
+}
+.btn-reset:hover{border-color:var(--taupe);color:var(--ink)}
+
+.action-hint{
+  font-size:0.82rem;color:var(--taupe);line-height:1.5;
+}
+
+/* ── result banner ────────────────────────────── */
+.result-banner{
+  display:none;
+  border-radius:10px;
+  padding:20px 24px;
+  margin-top:16px;
+  border-left:4px solid;
+}
+.result-banner.old-result{
+  background:#fff5f2;border-color:var(--ember);
+}
+.result-banner.new-result{
+  background:#f0faf0;border-color:#4CAF50;
+}
+.result-banner .rb-head{
+  font-weight:600;font-size:1rem;margin-bottom:6px;
+}
+.result-banner .rb-body{
+  font-size:0.88rem;color:var(--taupe);line-height:1.6;
+}
+
+/* ── old world: batch steps ───────────────────── */
+.batch-steps{
+  display:flex;flex-direction:column;gap:0;
+  margin-bottom:20px;
+}
+.batch-step{
+  display:flex;gap:14px;align-items:flex-start;
+  padding:14px 0;
+  border-bottom:1px solid var(--line);
+  cursor:pointer;
+  transition:opacity .2s;
+}
+.batch-step:last-child{border-bottom:none}
+.batch-step.done{opacity:0.45}
+.batch-step.active{opacity:1}
+.batch-step.locked{opacity:0.3;cursor:not-allowed}
+.batch-step .bs-num{
+  width:26px;height:26px;border-radius:50%;
+  background:var(--surface);border:1.5px solid var(--line);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.72rem;font-weight:700;color:var(--taupe);
+  flex-shrink:0;margin-top:1px;
+  transition:background .2s, border-color .2s;
+}
+.batch-step.done .bs-num{
+  background:#4CAF50;border-color:#4CAF50;color:#fff;
+}
+.batch-step.active .bs-num{
+  background:var(--ember);border-color:var(--ember);color:#fff;
+}
+.batch-step .bs-text{
+  font-size:0.9rem;color:var(--ink);line-height:1.5;
+}
+.batch-step .bs-sub{
+  font-size:0.78rem;color:var(--taupe);margin-top:2px;
+}
+.batch-step .bs-time{
+  margin-left:auto;flex-shrink:0;
+  font-size:0.72rem;font-weight:600;
+  color:var(--ember);
+  font-variant-numeric:tabular-nums;
+  padding-top:3px;
+}
+</style>
 </head>
 <body>
 
@@ -29,9 +305,9 @@
   <section class="detail-head">
     <div class="container">
       <a class="back" href="projects.html">&larr; All projects</a>
-      <p class="eyebrow">Tag</p>
-      <h1>Project B</h1>
-      <p class="tagline">One sentence on what this was and why it mattered. Replace with the real positioning line.</p>
+      <p class="eyebrow">Supply chain &middot; Mobile</p>
+      <h1>Real-time warehouse inward at Ula</h1>
+      <p class="tagline">Stock arrived at the warehouse at 11am and sat invisible to customers until 5pm. A mobile app for receiver workers closed that gap to seconds.</p>
     </div>
   </section>
 
@@ -40,7 +316,8 @@
       <div class="block-grid reveal">
         <div class="block-label">The problem</div>
         <div class="block-body">
-          <p class="placeholder">Replace this with the real context. Who was the customer, what was broken, and why did it matter enough to put a team on it. Keep it to a few sentences.</p>
+          <p>When a supplier truck pulled up at an Ula warehouse, the goods did not exist as far as the system was concerned. A receiver worker would log the inward on an AppSheet tool, which collated all the day's GRNs into an Excel file. At four or five in the evening, each warehouse admin would send that file to head office. Someone there would upload it manually into the inventory table. Only then would stock levels update, and only then could customers buy.</p>
+          <p>So stock that arrived at 11am would show as out of stock until 5pm. Retailers would call to check availability, be told it was coming, and sometimes not bother waiting. Every hour of invisible inventory was an hour of lost sales, and it was happening across every warehouse, every day.</p>
         </div>
       </div>
     </div>
@@ -53,7 +330,7 @@
       <div class="block-grid reveal">
         <div class="block-label">My role</div>
         <div class="block-body">
-          <p class="placeholder">Replace this with what you actually owned. Who you worked with, what was yours to decide, and where you led versus supported.</p>
+          <p>I owned this end to end as the sole PM. That meant the discovery, the design, working with engineering on the backend integration, and the rollout. The rollout piece was not a handoff. I flew to Indonesia and ran training sessions in person at three warehouses, watching workers use the app in real conditions and collecting feedback on the ground. What I heard there shaped several changes before the full network went live.</p>
         </div>
       </div>
     </div>
@@ -66,7 +343,133 @@
       <div class="block-grid reveal">
         <div class="block-label">Approach</div>
         <div class="block-body">
-          <p class="placeholder">Replace this with how you went about it. The hypothesis, the test that could have proven you wrong, and the calls you made when the evidence came back.</p>
+          <p>The fix was conceptually simple: replace the batch process with a mobile app that writes directly to the inventory table. No intermediary file, no manual upload, no end-of-day cutoff. A receiver worker scans a barcode, confirms quantities, submits the GRN, and the count goes live immediately.</p>
+          <p>The harder part was the people, not the technology. Warehouse workers had a process that worked well enough for them. The batch system was someone else's problem. Getting blue-collar workers to adopt a new tool required more than a clean interface. It required presence, patience, and enough in-person sessions for the habit to stick. The app went from three pilot warehouses to the full network within 20 days of launch.</p>
+
+          <!-- ── WAREHOUSE GAME ───────────────────────────── -->
+          <div class="game-wrap" id="warehouseGame">
+            <div class="game-mode-bar">
+              <button class="game-mode-btn active" onclick="setMode('old')" id="btnOld">Before: Batch upload</button>
+              <button class="game-mode-btn" onclick="setMode('new')" id="btnNew">After: Mobile GRN</button>
+            </div>
+
+            <!-- OLD WORLD -->
+            <div class="game-stage" id="stageOld">
+              <p style="font-size:0.88rem;color:var(--taupe);margin-bottom:20px;line-height:1.6;">A truck arrives at 11am. Walk through how inventory actually got updated in the old world. Click each step to advance.</p>
+
+              <div class="invisible-clock">
+                <div>
+                  <div class="clock-label">Inventory invisible for</div>
+                  <div class="clock-val" id="oldClock">0h 00m</div>
+                </div>
+                <div class="clock-note">Customers see "out of stock" until the upload happens</div>
+              </div>
+
+              <div class="batch-steps">
+                <div class="batch-step active" id="step1" onclick="advanceStep(1)">
+                  <div class="bs-num">1</div>
+                  <div>
+                    <div class="bs-text">Truck arrives. Worker logs GRN in AppSheet tool.</div>
+                    <div class="bs-sub">Paper-based counts transferred into a third-party app</div>
+                  </div>
+                  <div class="bs-time" id="t1">11:00am</div>
+                </div>
+                <div class="batch-step locked" id="step2" onclick="advanceStep(2)">
+                  <div class="bs-num">2</div>
+                  <div>
+                    <div class="bs-text">Admin collates all warehouse GRNs into one Excel file.</div>
+                    <div class="bs-sub">Done manually at end of shift</div>
+                  </div>
+                  <div class="bs-time" id="t2">4:00pm</div>
+                </div>
+                <div class="batch-step locked" id="step3" onclick="advanceStep(3)">
+                  <div class="bs-num">3</div>
+                  <div>
+                    <div class="bs-text">Excel file emailed to head office.</div>
+                    <div class="bs-sub">One file per warehouse, across the network</div>
+                  </div>
+                  <div class="bs-time" id="t3">4:30pm</div>
+                </div>
+                <div class="batch-step locked" id="step4" onclick="advanceStep(4)">
+                  <div class="bs-num">4</div>
+                  <div>
+                    <div class="bs-text">Head office admin uploads Excel to inventory table.</div>
+                    <div class="bs-sub">Manual import, runs once a day</div>
+                  </div>
+                  <div class="bs-time" id="t4">5:00pm</div>
+                </div>
+                <div class="batch-step locked" id="step5" onclick="advanceStep(5)">
+                  <div class="bs-num">5</div>
+                  <div>
+                    <div class="bs-text">Inventory goes live. Customers can finally buy.</div>
+                    <div class="bs-sub">6 hours after the stock physically arrived</div>
+                  </div>
+                  <div class="bs-time" id="t5">5:05pm</div>
+                </div>
+              </div>
+
+              <div class="result-banner old-result" id="oldResult">
+                <div class="rb-head">6 hours of invisible inventory. Every day.</div>
+                <div class="rb-body">Stock that arrived at 11am was live for customers at 5pm. Any retailer who called in that window was told to wait. Multiply this across every warehouse and every delivery, and the opportunity loss adds up fast.</div>
+              </div>
+
+              <div class="action-area">
+                <button class="btn-reset" onclick="resetOld()">Start over</button>
+              </div>
+            </div>
+
+            <!-- NEW WORLD -->
+            <div class="game-stage" id="stageNew" style="display:none">
+              <p style="font-size:0.88rem;color:var(--taupe);margin-bottom:20px;line-height:1.6;">Same truck. Same 11am arrival. Now you're the receiver worker with the app. Click each item to scan it, then submit.</p>
+
+              <div class="invisible-clock">
+                <div>
+                  <div class="clock-label">Inventory invisible for</div>
+                  <div class="clock-val" id="newClock">0s</div>
+                </div>
+                <div class="clock-note" id="newClockNote">Clock starts when the truck arrives</div>
+              </div>
+
+              <div class="warehouse-scene">
+                <div class="scene-label">Truck at the dock — tap each item to scan</div>
+                <div class="truck-area">
+                  <div class="truck-icon">🚛</div>
+                  <div class="items-grid" id="itemsGrid">
+                    <div class="item-box" id="item0" onclick="scanItem(0)">📦<div class="item-name">Rice 5kg</div></div>
+                    <div class="item-box" id="item1" onclick="scanItem(1)">🧴<div class="item-name">Cooking Oil</div></div>
+                    <div class="item-box" id="item2" onclick="scanItem(2)">🧂<div class="item-name">Sugar 1kg</div></div>
+                    <div class="item-box" id="item3" onclick="scanItem(3)">🥫<div class="item-name">Instant Noodles</div></div>
+                    <div class="item-box" id="item4" onclick="scanItem(4)">🧻<div class="item-name">Tissue</div></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="grn-panel">
+                <div class="grn-panel-title">GRN — Goods Receipt Note</div>
+                <div class="grn-rows" id="grnRows">
+                  <div class="grn-row pending" id="row0"><span class="gr-icon">📦</span><span class="gr-name">Rice 5kg</span><span class="gr-qty">— units</span></div>
+                  <div class="grn-row pending" id="row1"><span class="gr-icon">🧴</span><span class="gr-name">Cooking Oil</span><span class="gr-qty">— units</span></div>
+                  <div class="grn-row pending" id="row2"><span class="gr-icon">🧂</span><span class="gr-name">Sugar 1kg</span><span class="gr-qty">— units</span></div>
+                  <div class="grn-row pending" id="row3"><span class="gr-icon">🥫</span><span class="gr-name">Instant Noodles</span><span class="gr-qty">— units</span></div>
+                  <div class="grn-row pending" id="row4"><span class="gr-icon">🧻</span><span class="gr-name">Tissue</span><span class="gr-qty">— units</span></div>
+                </div>
+              </div>
+
+              <div class="action-area" style="margin-bottom:16px;">
+                <button class="btn-submit" id="btnSubmit" disabled onclick="submitGRN()">Submit GRN</button>
+                <button class="btn-reset" onclick="resetNew()">Start over</button>
+                <span class="action-hint" id="scanHint">Scan all 5 items to enable submit</span>
+              </div>
+
+              <div class="result-banner new-result" id="newResult">
+                <div class="rb-head" id="newResultHead"></div>
+                <div class="rb-body">Inventory updated in seconds. No Excel. No email. No head office upload. The same stock that took 6 hours to go live now appears the moment it's physically inside the warehouse.</div>
+              </div>
+
+            </div>
+          </div>
+          <!-- ── END GAME ────────────────────────────────── -->
+
         </div>
       </div>
     </div>
@@ -79,7 +482,8 @@
       <div class="block-grid reveal">
         <div class="block-label">What shipped</div>
         <div class="block-body">
-          <p class="placeholder">Replace this with what went live and how it changed things, told qualitatively. Metrics can come later once you decide what is safe to share publicly.</p>
+          <p>A mobile app that let receiver workers scan incoming goods, confirm quantities, and submit a GRN in under a minute. The moment they hit submit, inventory updated. No batch, no file, no upload window.</p>
+          <p>I piloted it across three warehouses in person, running training sessions on the floor until workers were comfortable enough to use it without prompting. Within 20 days of those pilots, the app was live across the entire warehouse network.</p>
         </div>
       </div>
     </div>
@@ -92,7 +496,8 @@
       <div class="block-grid reveal">
         <div class="block-label">What I learned</div>
         <div class="block-body">
-          <p class="placeholder">Replace this with one honest takeaway. What you would do differently reads better than a victory lap.</p>
+          <p>The technology was the easy part. A direct backend integration is a solved problem. The hard part was changing a habit in people for whom the old process was not broken. Blue-collar workers had a system that was someone else's headache, and giving them a new tool meant taking on their skepticism directly.</p>
+          <p>Going in person was the right call. No amount of documentation or remote training would have surfaced what three days on the warehouse floor did. Half of the feedback that shaped the final app came from watching someone use it wrong, not from anything they said.</p>
         </div>
       </div>
     </div>
@@ -101,7 +506,7 @@
   <section class="block">
     <div class="container">
       <div class="proj-nav">
-        <a href="automate-procurement.html">&larr; Previous: Project A</a>
+        <a href="automate-procurement.html">&larr; Previous: Procurement Automation</a>
         <a href="project-c.html">Next: Project C &rarr;</a>
       </div>
     </div>
@@ -126,5 +531,143 @@
 </footer>
 
 <script src="app.js"></script>
+<script>
+// ── mode toggle ──────────────────────────────────────
+function setMode(mode) {
+  document.getElementById('stageOld').style.display = mode === 'old' ? 'block' : 'none';
+  document.getElementById('stageNew').style.display = mode === 'new' ? 'block' : 'none';
+  document.getElementById('btnOld').classList.toggle('active', mode === 'old');
+  document.getElementById('btnNew').classList.toggle('active', mode === 'new');
+  if (mode === 'new' && !newStarted) startNewClock();
+}
+
+// ── OLD WORLD ────────────────────────────────────────
+let oldStep = 1;
+const stepTimes = [0, 0, 300, 330, 360, 365]; // minutes from 11am
+
+function advanceStep(n) {
+  if (n !== oldStep) return;
+  const el = document.getElementById('step' + n);
+  el.classList.remove('active');
+  el.classList.add('done');
+  el.onclick = null;
+
+  const clockMins = stepTimes[n];
+  updateOldClock(clockMins);
+
+  if (n < 5) {
+    oldStep = n + 1;
+    const next = document.getElementById('step' + oldStep);
+    next.classList.remove('locked');
+    next.classList.add('active');
+  } else {
+    document.getElementById('oldResult').style.display = 'block';
+  }
+}
+
+function updateOldClock(mins) {
+  const h = Math.floor(mins / 60);
+  const m = mins % 60;
+  document.getElementById('oldClock').textContent = h + 'h ' + String(m).padStart(2,'0') + 'm';
+}
+
+function resetOld() {
+  oldStep = 1;
+  for (let i = 1; i <= 5; i++) {
+    const el = document.getElementById('step' + i);
+    el.classList.remove('done', 'active', 'locked');
+    el.classList.add(i === 1 ? 'active' : 'locked');
+    el.onclick = function(){ advanceStep(i); };
+  }
+  updateOldClock(0);
+  document.getElementById('oldResult').style.display = 'none';
+}
+
+// ── NEW WORLD ────────────────────────────────────────
+const quantities = [120, 48, 200, 300, 96];
+const scanned = [false, false, false, false, false];
+let newStarted = false;
+let newTimer = null;
+let newSeconds = 0;
+let submitted = false;
+
+function startNewClock() {
+  newStarted = true;
+  newTimer = setInterval(() => {
+    if (submitted) return;
+    newSeconds++;
+    document.getElementById('newClock').textContent = newSeconds + 's';
+  }, 1000);
+}
+
+function scanItem(i) {
+  if (scanned[i] || submitted) return;
+  scanned[i] = true;
+
+  const box = document.getElementById('item' + i);
+  box.classList.add('scanned');
+  box.onclick = null;
+
+  const row = document.getElementById('row' + i);
+  row.classList.remove('pending');
+  row.classList.add('scanned');
+  row.querySelector('.gr-qty').textContent = quantities[i] + ' units';
+
+  const allScanned = scanned.every(Boolean);
+  if (allScanned) {
+    document.getElementById('btnSubmit').disabled = false;
+    document.getElementById('scanHint').textContent = 'All items scanned. Ready to submit.';
+  } else {
+    const left = scanned.filter(Boolean).length;
+    document.getElementById('scanHint').textContent = left + ' of 5 scanned';
+  }
+}
+
+function submitGRN() {
+  if (submitted) return;
+  submitted = true;
+  clearInterval(newTimer);
+
+  const clock = document.getElementById('newClock');
+  clock.classList.add('stopped');
+
+  document.getElementById('newClockNote').textContent = 'Inventory updated the moment you submitted';
+  document.getElementById('btnSubmit').disabled = true;
+  document.getElementById('scanHint').textContent = '';
+
+  const result = document.getElementById('newResult');
+  document.getElementById('newResultHead').textContent =
+    'Done in ' + newSeconds + ' seconds. Inventory live now.';
+  result.style.display = 'block';
+}
+
+function resetNew() {
+  clearInterval(newTimer);
+  newStarted = false;
+  submitted = false;
+  newSeconds = 0;
+
+  for (let i = 0; i < 5; i++) {
+    scanned[i] = false;
+    const box = document.getElementById('item' + i);
+    box.classList.remove('scanned');
+    box.onclick = function(){ scanItem(i); };
+
+    const row = document.getElementById('row' + i);
+    row.classList.remove('scanned');
+    row.classList.add('pending');
+    row.querySelector('.gr-qty').textContent = '— units';
+  }
+
+  document.getElementById('newClock').textContent = '0s';
+  document.getElementById('newClock').classList.remove('stopped');
+  document.getElementById('newClockNote').textContent = 'Clock starts when the truck arrives';
+  document.getElementById('btnSubmit').disabled = true;
+  document.getElementById('scanHint').textContent = 'Scan all 5 items to enable submit';
+  document.getElementById('newResult').style.display = 'none';
+
+  startNewClock();
+}
+</script>
 </body>
 </html>
