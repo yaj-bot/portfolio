@@ -4,67 +4,92 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PSN India — Yajur Bawa</title>
-<meta name="description" content="A PlayStation deal tracker and backlog manager for the Indian PSN store. Coming 30 June 2026.">
+<meta name="description" content="PSNDeal: a PlayStation deal tracker and backlog manager built solo for the Indian PSN store.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <style>
-  .cs-wrap{
-    min-height:62vh;
-    display:flex;align-items:center;
-    padding:80px 0 60px;
-  }
-  .cs-inner{
-    max-width:520px;
-  }
-  .cs-badge{
-    display:inline-block;
-    font-size:0.72rem;font-weight:600;text-transform:uppercase;
-    letter-spacing:0.14em;
-    background:var(--ink);color:var(--paper);
-    border-radius:4px;padding:4px 10px;
-    margin-bottom:28px;
-  }
-  .cs-inner h1{
-    font-family:"Newsreader",Georgia,serif;font-weight:400;
-    font-size:clamp(2.4rem,2rem + 2vw,3.6rem);
-    line-height:1.05;letter-spacing:-0.015em;
-    margin-bottom:20px;
-  }
-  .cs-inner .tagline{
-    font-size:1.12rem;color:var(--taupe);
-    line-height:1.6;max-width:44ch;
-    margin-bottom:32px;
-  }
-  .cs-eta{
-    font-size:0.88rem;color:var(--taupe);
-    border-left:2px solid var(--ember);
-    padding-left:14px;
-    margin-bottom:36px;
-  }
-  .cs-eta strong{color:var(--ink)}
-  .cs-features{
-    list-style:none;padding:0;margin:0 0 40px;
-    display:flex;flex-direction:column;gap:10px;
-  }
-  .cs-features li{
-    display:flex;align-items:baseline;gap:10px;
-    font-size:0.97rem;color:var(--taupe);
-  }
-  .cs-features li::before{
-    content:"";
-    display:inline-block;
-    width:6px;height:6px;border-radius:50%;
-    background:var(--ember);flex-shrink:0;
-    position:relative;top:-1px;
-  }
-  .cs-back{
-    display:inline-flex;align-items:center;gap:6px;
-    font-weight:600;font-size:0.95rem;color:var(--taupe);
-  }
-  .cs-back:hover{color:var(--ember);text-decoration:none}
+
+/* ── deal cards ─────────────────────────────────── */
+.deal-shell{
+  margin-top:36px;
+}
+.deal-intro{
+  font-size:0.92rem;color:var(--taupe);
+  margin-bottom:24px;max-width:52ch;line-height:1.6;
+}
+.deal-cards{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+  margin-bottom:28px;
+}
+@media(max-width:700px){.deal-cards{grid-template-columns:1fr}}
+
+.deal-card{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:18px 20px 16px;
+  position:relative;
+  display:flex;flex-direction:column;gap:10px;
+}
+.deal-badge{
+  position:absolute;top:14px;right:14px;
+  background:var(--ember);color:#fff;
+  font-size:0.72rem;font-weight:600;
+  border-radius:5px;padding:3px 8px;
+  letter-spacing:0.04em;
+}
+.deal-platform{
+  font-size:0.7rem;font-weight:600;text-transform:uppercase;
+  letter-spacing:0.12em;color:var(--taupe);
+}
+.deal-title{
+  font-family:"Newsreader",Georgia,serif;font-weight:400;
+  font-size:1.14rem;line-height:1.2;color:var(--ink);
+  padding-right:44px;
+}
+.deal-meta{
+  display:flex;align-items:baseline;gap:10px;margin-top:2px;
+}
+.deal-price{
+  font-family:"Newsreader",Georgia,serif;
+  font-size:1.45rem;font-weight:400;color:var(--ember);
+  line-height:1;
+}
+.deal-original{
+  font-size:0.84rem;color:var(--taupe);text-decoration:line-through;
+}
+.deal-rating{
+  font-size:0.8rem;color:var(--taupe);margin-top:auto;
+}
+
+/* ── visit CTA ──────────────────────────────────── */
+.psn-cta{
+  display:inline-flex;align-items:center;gap:6px;
+  font-weight:600;font-size:0.96rem;color:var(--ember);
+}
+
+/* ── stat row ───────────────────────────────────── */
+.stat-row{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:32px;margin-top:36px;
+}
+@media(max-width:700px){.stat-row{grid-template-columns:1fr;gap:22px}}
+.stat-block .stat-val{
+  font-family:"Newsreader",Georgia,serif;font-weight:400;
+  font-size:2.2rem;color:var(--ember);letter-spacing:-0.02em;
+  line-height:1;
+}
+.stat-block .stat-label{
+  font-size:0.75rem;font-weight:600;text-transform:uppercase;
+  letter-spacing:0.13em;color:var(--taupe);margin-top:6px;
+}
+.stat-block .stat-sub{
+  font-size:0.85rem;color:var(--taupe);margin-top:4px;line-height:1.5;
+}
+
 </style>
 </head>
 <body>
@@ -81,26 +106,167 @@
 </header>
 
 <main>
-  <div class="container cs-wrap">
-    <div class="cs-inner">
-      <span class="cs-badge">Side project &middot; Coming soon</span>
-      <h1>PSN India</h1>
-      <p class="tagline">A deal tracker and backlog manager built for the Indian PlayStation Store. Track discounts, manage your wishlist, and stop losing games to the sale you missed.</p>
 
-      <div class="cs-eta">
-        <strong>Going live 30 June 2026.</strong> Built solo on Lovable and Supabase.
-      </div>
-
-      <ul class="cs-features">
-        <li>Deal tracking across the Indian PSN catalogue</li>
-        <li>Wishlist with price drop alerts</li>
-        <li>Backlog manager to track what you own and what you're playing</li>
-        <li>One-person team, owned end to end</li>
-      </ul>
-
-      <a class="cs-back" href="projects.html">&larr; Back to projects</a>
+  <section class="detail-head">
+    <div class="container">
+      <a class="back" href="projects.html">&larr; All projects</a>
+      <p class="eyebrow">Side project &middot; Consumer</p>
+      <h1>PSNDeal</h1>
+      <p class="tagline">A deal tracker and backlog manager for PlayStation gamers in India. I got tired of missing sales and built something to fix that.</p>
     </div>
-  </div>
+  </section>
+
+  <section class="block">
+    <div class="container">
+      <div class="block-grid reveal">
+        <div class="block-label">The problem</div>
+        <div class="block-body">
+          <p>PlayStation sales on the Indian store are unpredictable and short. If you are not watching the right places at the right time, you find out a game went on sale after it is already back to full price. The tools that exist are mostly built for the US store, show you pricing in dollars, and require you to wade through noise to find deals that are actually good.</p>
+          <p>Indian gamers have been making do with Reddit threads and spreadsheets. I was one of them. When a game dropped from &#8377;4,000 to &#8377;800 for seventy-two hours, you either knew or you did not. I wanted something that watched for you.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container"><hr class="divider"></div>
+
+  <section class="block">
+    <div class="container">
+      <div class="block-grid reveal">
+        <div class="block-label">My role</div>
+        <div class="block-body">
+          <p>I built this alone, with AI assistance, from scratch. That meant doing every part of it: reverse-engineering Sony's storefront API, designing the data model, writing the scraper that runs daily, and building the frontend. There was no team to hand off to. Every decision about what mattered and what did not was mine.</p>
+          <p>It launched on 30 June 2026.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container"><hr class="divider"></div>
+
+  <section class="block">
+    <div class="container">
+      <div class="block-grid reveal">
+        <div class="block-label">What I built</div>
+        <div class="block-body">
+          <p>The scraper pulls pricing data for the entire Indian PSN catalogue every day and stores it. That history is what makes everything else possible: the site can tell you not just what a game costs today, but whether that price is actually a good deal relative to where it has been.</p>
+          <p>The deal scoring is weighted by discount percentage, user rating, and rating count together. A 90% off game with three reviews scores lower than a 60% off game that thousands of people have rated highly. That weighting is what separates the top deals from just the cheapest things.</p>
+          <p>Alongside deals, there is a wishlist and a backlog manager. You add games you want to buy, and the site alerts you when they drop. The backlog lets you track what you own and where you are with it. Both are the things I actually wanted when I was doing this in a spreadsheet.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container"><hr class="divider"></div>
+
+  <!-- ── DEAL CARDS + CTA ───────────────────────────── -->
+  <section class="block">
+    <div class="container">
+      <div class="block-grid reveal">
+        <div class="block-label">See it live</div>
+        <div class="block-body">
+          <p>These are the kinds of deals the site surfaces. Scoring factors in discount, rating, and how many people rated the game, so the list is signal, not noise.</p>
+
+          <div class="deal-shell">
+            <div class="deal-cards">
+
+              <div class="deal-card">
+                <span class="deal-badge">&#8722;75%</span>
+                <span class="deal-platform">PS4 / PS5</span>
+                <div class="deal-title">God of War Ragnar&ouml;k</div>
+                <div class="deal-meta">
+                  <span class="deal-price">&#8377;1,249</span>
+                  <span class="deal-original">&#8377;4,999</span>
+                </div>
+                <div class="deal-rating">&#9733; 4.8 &nbsp;&middot;&nbsp; 38,000+ ratings</div>
+              </div>
+
+              <div class="deal-card">
+                <span class="deal-badge">&#8722;67%</span>
+                <span class="deal-platform">PS4 / PS5</span>
+                <div class="deal-title">Red Dead Redemption 2</div>
+                <div class="deal-meta">
+                  <span class="deal-price">&#8377;990</span>
+                  <span class="deal-original">&#8377;2,999</span>
+                </div>
+                <div class="deal-rating">&#9733; 4.7 &nbsp;&middot;&nbsp; 52,000+ ratings</div>
+              </div>
+
+              <div class="deal-card">
+                <span class="deal-badge">&#8722;60%</span>
+                <span class="deal-platform">PS5</span>
+                <div class="deal-title">Returnal</div>
+                <div class="deal-meta">
+                  <span class="deal-price">&#8377;1,599</span>
+                  <span class="deal-original">&#8377;3,999</span>
+                </div>
+                <div class="deal-rating">&#9733; 4.5 &nbsp;&middot;&nbsp; 14,000+ ratings</div>
+              </div>
+
+            </div>
+
+            <a class="psn-cta" href="https://psndeal.com" target="_blank" rel="noopener">Visit PSNDeal &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ── END DEAL CARDS ─────────────────────────────── -->
+
+  <div class="container"><hr class="divider"></div>
+
+  <section class="block">
+    <div class="container">
+      <div class="block-grid reveal">
+        <div class="block-label">Early traction</div>
+        <div class="block-body">
+          <p>The site launched on 30 June 2026 with no marketing. The only distribution was a post on the Indian PlayStation subreddit and a couple of gaming Discord servers.</p>
+
+          <div class="stat-row">
+            <div class="stat-block">
+              <div class="stat-val">100</div>
+              <div class="stat-label">Users in 24 hours</div>
+              <div class="stat-sub">Organic only. No paid promotion.</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-val">10K+</div>
+              <div class="stat-label">Games tracked</div>
+              <div class="stat-sub">Full IN and US catalogue with daily price pulls.</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-val">Daily</div>
+              <div class="stat-label">Scraper cadence</div>
+              <div class="stat-sub">Price history updates every day, automatically.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container"><hr class="divider"></div>
+
+  <section class="block">
+    <div class="container">
+      <div class="block-grid reveal">
+        <div class="block-label">What I learned</div>
+        <div class="block-body">
+          <p>The hardest part was not the code. It was deciding what the site was actually for. A deal tracker and a backlog manager are two different tools with two different reasons to return. I kept both because I use both, but the tension between them is something I still think about as it grows.</p>
+          <p>Building without a team also means every bad decision is entirely yours. That is clarifying in a way that working inside a large product org is not. You find out quickly what actually matters to users because you are watching all the data yourself and there is nobody else to blame when something is confusing.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="container">
+      <div class="proj-nav">
+        <a href="projects.html">&larr; All projects</a>
+        <a href="project-c.html">Next: Project C &rarr;</a>
+      </div>
+    </div>
+  </section>
+
 </main>
 
 <footer class="footer" id="contact">
