@@ -3,13 +3,163 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Project C | Yajur Bawa</title>
-<meta name="description" content="Project C, product work by Yajur Bawa.">
+<title>Customer Data Platform at Sprinklr | Yajur Bawa</title>
+<meta name="description" content="How Yajur Bawa built a customer data platform at Sprinklr that consolidated fragmented signals into a single health view for field teams and leadership.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+<style>
+/* ── data flow diagram ────────────────────────── */
+.data-flow{
+  margin:32px 0;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:28px 24px;
+}
+.flow-label{
+  font-size:0.72rem;font-weight:600;text-transform:uppercase;
+  letter-spacing:0.13em;color:var(--taupe);margin-bottom:20px;
+}
+.flow-sources{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin-bottom:20px;
+}
+@media(max-width:600px){.flow-sources{grid-template-columns:repeat(2,1fr)}}
+
+.flow-source{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:12px 14px;
+  font-size:0.82rem;
+  color:var(--ink);
+}
+.flow-source .fs-icon{font-size:1.2rem;margin-bottom:6px}
+.flow-source .fs-name{font-weight:600;margin-bottom:2px}
+.flow-source .fs-type{font-size:0.72rem;color:var(--taupe)}
+
+.flow-arrow{
+  text-align:center;
+  color:var(--taupe);font-size:1.2rem;
+  margin-bottom:16px;
+  letter-spacing:4px;
+}
+
+.flow-platform{
+  background:var(--ink);
+  border-radius:8px;
+  padding:16px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.fp-label{
+  font-size:0.82rem;font-weight:600;color:#fff;
+}
+.fp-sub{
+  font-size:0.72rem;color:rgba(255,255,255,0.5);margin-top:2px;
+}
+.fp-outputs{
+  display:flex;gap:8px;flex-wrap:wrap;
+}
+.fp-output{
+  background:rgba(255,255,255,0.1);
+  border-radius:6px;
+  padding:5px 10px;
+  font-size:0.72rem;font-weight:600;
+  color:rgba(255,255,255,0.8);
+  text-transform:uppercase;letter-spacing:0.09em;
+}
+.fp-output.highlight{
+  background:var(--ember);color:#fff;
+}
+
+/* ── persona cards ────────────────────────────── */
+.persona-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+  margin-top:20px;
+}
+@media(max-width:700px){.persona-grid{grid-template-columns:1fr}}
+
+.persona-card{
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:18px 20px;
+  background:var(--surface);
+}
+.persona-card .pc-role{
+  font-size:0.7rem;font-weight:600;text-transform:uppercase;
+  letter-spacing:0.13em;color:var(--ember);margin-bottom:8px;
+}
+.persona-card .pc-title{
+  font-weight:600;font-size:0.95rem;color:var(--ink);margin-bottom:8px;
+}
+.persona-card .pc-pain{
+  font-size:0.83rem;color:var(--taupe);line-height:1.6;
+}
+
+/* ── timeline ─────────────────────────────────── */
+.timeline{
+  margin-top:24px;
+  display:flex;flex-direction:column;gap:0;
+}
+.tl-item{
+  display:flex;gap:18px;
+  padding:18px 0;
+  border-bottom:1px solid var(--line);
+}
+.tl-item:last-child{border-bottom:none}
+.tl-left{
+  display:flex;flex-direction:column;align-items:center;gap:0;
+  flex-shrink:0;width:40px;
+}
+.tl-dot{
+  width:12px;height:12px;border-radius:50%;
+  background:var(--ember);flex-shrink:0;
+  margin-top:3px;
+}
+.tl-line{
+  width:2px;flex:1;
+  background:var(--line);
+  margin-top:4px;
+}
+.tl-item:last-child .tl-line{display:none}
+.tl-body{}
+.tl-phase{
+  font-size:0.7rem;font-weight:600;text-transform:uppercase;
+  letter-spacing:0.13em;color:var(--taupe);margin-bottom:6px;
+}
+.tl-title{
+  font-weight:600;font-size:0.97rem;color:var(--ink);margin-bottom:6px;
+}
+.tl-desc{
+  font-size:0.87rem;color:var(--taupe);line-height:1.6;
+}
+
+/* ── award callout ────────────────────────────── */
+.award-block{
+  margin-top:28px;
+  border-left:3px solid var(--ember);
+  padding:16px 20px;
+  background:var(--surface);
+  border-radius:0 8px 8px 0;
+}
+.award-block .ab-label{
+  font-size:0.7rem;font-weight:600;text-transform:uppercase;
+  letter-spacing:0.13em;color:var(--ember);margin-bottom:6px;
+}
+.award-block .ab-text{
+  font-size:0.95rem;color:var(--ink);line-height:1.6;
+}
+</style>
 </head>
 <body>
 
@@ -29,9 +179,9 @@
   <section class="detail-head">
     <div class="container">
       <a class="back" href="projects.html">&larr; All projects</a>
-      <p class="eyebrow">Tag</p>
-      <h1>Project C</h1>
-      <p class="tagline">One sentence on what this was and why it mattered. Replace with the real positioning line.</p>
+      <p class="eyebrow">B2B SaaS &middot; Data platform</p>
+      <h1>Customer data platform at Sprinklr</h1>
+      <p class="tagline">Sprinklr's field teams were flying blind. Customer data lived in five different places, so nobody looked at it until a renewal was already at risk. I built the platform that changed that.</p>
     </div>
   </section>
 
@@ -40,7 +190,67 @@
       <div class="block-grid reveal">
         <div class="block-label">The problem</div>
         <div class="block-body">
-          <p class="placeholder">Replace this with the real context. Who was the customer, what was broken, and why did it matter enough to put a team on it. Keep it to a few sentences.</p>
+          <p>Sprinklr is a complex enterprise platform spanning more than twenty products. Every customer generates signals across all of them: purchases logged in Salesforce, product consumption coming from the platform itself, support tickets in a separate module, and health scores filled in manually by success managers in Excel and processed later. No single person had a coherent view of any of it.</p>
+          <p>The result was that field teams, success managers, account executives, renewal managers, only looked at customer data when they absolutely had to. Before an annual business review. Before a renewal. When a customer had already flagged a problem. By then, pulling everything together took hours, and they were always reacting, never ahead of it. The signals were there. Nobody was reading them in time.</p>
+
+          <div class="data-flow">
+            <div class="flow-label">Where data lived before</div>
+            <div class="flow-sources">
+              <div class="flow-source">
+                <div class="fs-icon">📊</div>
+                <div class="fs-name">Salesforce</div>
+                <div class="fs-type">Purchase and ARR data</div>
+              </div>
+              <div class="flow-source">
+                <div class="fs-icon">⚙️</div>
+                <div class="fs-name">Sprinklr platform</div>
+                <div class="fs-type">Product consumption</div>
+              </div>
+              <div class="flow-source">
+                <div class="fs-icon">🎫</div>
+                <div class="fs-name">Support module</div>
+                <div class="fs-type">Ticket volume and CSAT</div>
+              </div>
+              <div class="flow-source">
+                <div class="fs-icon">📋</div>
+                <div class="fs-name">Excel sheets</div>
+                <div class="fs-type">Manual health scores</div>
+              </div>
+            </div>
+            <div class="flow-arrow">↓ ↓ ↓ ↓</div>
+            <div class="flow-platform">
+              <div>
+                <div class="fp-label">Customer Data Platform</div>
+                <div class="fp-sub">Unified pipeline, single source of truth</div>
+              </div>
+              <div class="fp-outputs">
+                <div class="fp-output">Health score</div>
+                <div class="fp-output">Churn risk</div>
+                <div class="fp-output highlight">ARR exposure</div>
+                <div class="fp-output">Adoption signals</div>
+              </div>
+            </div>
+          </div>
+
+          <p>Three distinct groups needed this, and they needed different things from it.</p>
+
+          <div class="persona-grid">
+            <div class="persona-card">
+              <div class="pc-role">Persona 1</div>
+              <div class="pc-title">Field teams</div>
+              <div class="pc-pain">Success managers and account executives who needed to spot at-risk accounts early, not hours before an escalation call.</div>
+            </div>
+            <div class="persona-card">
+              <div class="pc-role">Persona 2</div>
+              <div class="pc-title">Leadership</div>
+              <div class="pc-pain">CXOs and regional leaders who needed a bird's eye view of customer health across their portfolio without having to ask five people for data.</div>
+            </div>
+            <div class="persona-card">
+              <div class="pc-role">Persona 3</div>
+              <div class="pc-title">End customers</div>
+              <div class="pc-pain">Customers had no visibility into their own consumption versus what they had purchased. Every question routed back to their success manager, adding support load and slowing answers.</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -53,7 +263,8 @@
       <div class="block-grid reveal">
         <div class="block-label">My role</div>
         <div class="block-body">
-          <p class="placeholder">Replace this with what you actually owned. Who you worked with, what was yours to decide, and where you led versus supported.</p>
+          <p>I led the initiative end to end, from discovery through to internal adoption. This meant working across data engineering, field teams, and executive stakeholders to define what the platform needed to do and how the data would flow into it. I partnered with one other PM specifically for the GTM and field rollout phase, where the volume of training and feedback calls across success teams required two people on it full time.</p>
+          <p>This was a CTO-led initiative, which shaped how it moved. Decisions that might have taken weeks got made in days. That also meant the bar for what we shipped and how we presented it was consistently high.</p>
         </div>
       </div>
     </div>
@@ -66,7 +277,52 @@
       <div class="block-grid reveal">
         <div class="block-label">Approach</div>
         <div class="block-body">
-          <p class="placeholder">Replace this with how you went about it. The hypothesis, the test that could have proven you wrong, and the calls you made when the evidence came back.</p>
+          <p>The first question was not what to build. It was what data actually meant anything. Sprinklr has more than twenty products, each with its own consumption patterns. Raw usage numbers without context are noise. A customer could have high consumption driven entirely by automated rules, which looks healthy on a dashboard but signals nothing real about engagement.</p>
+          <p>I ran discovery across field teams and executive leaders to understand two things: what signals they already relied on when assessing a customer, and where their current process broke down. From that I worked with the respective product managers for each Sprinklr product to define adoption metrics that reflected genuine, intentional usage, not just volume.</p>
+          <p>Once the right metrics were identified, the pipeline work began. Consolidating data from Salesforce, the platform, the support module, and manual inputs into a single clean feed was the foundational piece. Everything downstream depended on getting this right.</p>
+
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div>
+              <div class="tl-body">
+                <div class="tl-phase">Phase 1</div>
+                <div class="tl-title">Discovery and metric definition</div>
+                <div class="tl-desc">Interviewed field teams, renewal managers, and CXOs. Worked with 20+ product PMs to define adoption metrics that reflected real engagement, not inflated by automation. Identified the data sources and gaps in the pipeline.</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div>
+              <div class="tl-body">
+                <div class="tl-phase">Phase 2</div>
+                <div class="tl-title">MVP on Power BI</div>
+                <div class="tl-desc">Given the pace of a CTO-led initiative, we shipped fast. A Power BI dashboard consolidated all four data sources and surfaced health scores, churn risk, and ARR exposure. Enough to validate the model and get real feedback before building further.</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div>
+              <div class="tl-body">
+                <div class="tl-phase">Phase 3</div>
+                <div class="tl-title">Customer-facing visibility</div>
+                <div class="tl-desc">Built a dedicated screen inside the Sprinklr platform giving end customers direct visibility into their purchase versus consumption data. Reduced the number of support queries that were routing back to success managers simply because customers lacked basic visibility.</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div>
+              <div class="tl-body">
+                <div class="tl-phase">Phase 4</div>
+                <div class="tl-title">Migration to internal platform</div>
+                <div class="tl-desc">Migrated from Power BI to an internal platform for tighter alerting, faster iterations on the data model, and better integration with Sprinklr's own tooling. This made the feedback loop from field teams to data corrections significantly shorter.</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div>
+              <div class="tl-body">
+                <div class="tl-phase">Phase 5</div>
+                <div class="tl-title">Internal rollout and adoption</div>
+                <div class="tl-desc">Ran training sessions and regular feedback calls with success teams across regions. Worked through data accuracy issues, corrected signals that felt wrong to the field, and tracked adoption until most success managers had made the platform part of their regular workflow.</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -79,7 +335,13 @@
       <div class="block-grid reveal">
         <div class="block-label">What shipped</div>
         <div class="block-body">
-          <p class="placeholder">Replace this with what went live and how it changed things, told qualitatively. Metrics can come later once you decide what is safe to share publicly.</p>
+          <p>A unified customer data platform that gave field teams, leadership, and end customers a single, coherent view of customer health for the first time. Success managers stopped building spreadsheets before every customer call. Regional leaders could assess portfolio health at a glance without waiting for reports. Customers could see their own consumption data directly, without routing requests through their success manager.</p>
+          <p>The platform became the primary tool field teams used to identify at-risk accounts before those accounts raised a flag themselves. Within the first quarter of going live, it contributed directly to improvements in ARR and net revenue retention, and a measurable reduction in churn, driven by the ability to spot and act on signals proactively rather than reactively.</p>
+
+          <div class="award-block">
+            <div class="ab-label">CTO Award</div>
+            <div class="ab-text">Received the CTO Award within six months of joining Sprinklr, in recognition of the impact this initiative had on how the company manages customer health at scale.</div>
+          </div>
         </div>
       </div>
     </div>
@@ -92,7 +354,8 @@
       <div class="block-grid reveal">
         <div class="block-label">What I learned</div>
         <div class="block-body">
-          <p class="placeholder">Replace this with one honest takeaway. What you would do differently reads better than a victory lap.</p>
+          <p>The hardest part of this project was not building the pipeline or designing the dashboard. It was earning trust with the field teams who had been burned by inaccurate data before and were skeptical that this would be any different. Every data point they questioned had to be investigated and corrected quickly, or the whole thing lost credibility.</p>
+          <p>That taught me something that I now think applies to most internal data products: adoption is not a GTM problem. It is a data quality problem. Once the numbers felt right to the people using them, adoption followed without much pushing. The training sessions and feedback calls were valuable, but the real unlock was fixing the data until teams trusted what they were seeing.</p>
         </div>
       </div>
     </div>
@@ -101,7 +364,7 @@
   <section class="block">
     <div class="container">
       <div class="proj-nav">
-        <a href="grn-wms.html">&larr; Previous: Project B</a>
+        <a href="grn-wms.html">&larr; Previous: GRN on Mobile</a>
         <a href="projects.html">All projects &rarr;</a>
       </div>
     </div>
